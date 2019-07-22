@@ -13,7 +13,7 @@ class Event():
         self.place = place
         self.num = num
         self.members = []
-        self.is_announced = False
+        self.is_announced = 0
 
     def add_member(self, user):
         self.members.append(user)

@@ -89,12 +89,20 @@ def sender():
         # do
         currentTime = int(str(datetime.now())[11:13]) * 60 + int(str(datetime.now())[14:16])
         for key in events:
-            if events[key].time is not None and events[key].is_announced == False:
+            if events[key].time is not None and events[key].is_announced == 0:
+                eventTime = int(events[key].time[:2]) * 60 + int(events[key].time[3:])
+                if currentTime >= eventTime - 10:
+                    events[key].is_announced = 1
+                    text = '@' + ' @'.join(events[key].get_usernames())
+                    text = text + '\nЧерез 10 минут начнется событие: \n' + events[key].get_description()
+                    print(text)
+                    bot.send_message(-369417918, text)
+            if events[key].time is not None and events[key].is_announced == 1:
                 eventTime = int(events[key].time[:2]) * 60 + int(events[key].time[3:])
                 if eventTime <= currentTime:
-                    events[key].is_announced = True
+                    events[key].is_announced = 2
                     text = '@' + ' @'.join(events[key].get_usernames())
-                    text = text + '\n Началось событие: \n' + events[key].get_description()
+                    text = text + '\nНачалось событие: \n' + events[key].get_description()
                     print(text)
                     bot.send_message(-369417918, text)
         time.sleep(1)
